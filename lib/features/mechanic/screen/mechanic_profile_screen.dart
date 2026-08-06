@@ -1,3 +1,4 @@
+import 'package:auto_care_app/widgets/common/role_bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/router/app_router.dart';
@@ -145,40 +146,20 @@ class _MechanicProfileView extends StatelessWidget {
 
                     // --- Settings list ---
                     _SettingsTile(
-                      icon: Icons.lock_reset_outlined,
-                      label: 'Change Password',
-                      onTap: () {
-                        // TODO: navigate to change password screen
-                      },
-                    ),
-                    _SettingsTile(
-                      icon: Icons.notifications_outlined,
-                      label: 'Notification Settings',
-                      onTap: () {
-                        // TODO: navigate to notification settings
-                      },
-                    ),
-                    _SettingsTile(
-                      icon: Icons.help_outline,
-                      label: 'Help & Support',
-                      onTap: () {
-                        // TODO: navigate to help & support
-                      },
-                    ),
-                    _SettingsTile(
                       icon: Icons.logout,
                       label: 'Logout',
                       isDestructive: true,
                       onTap: () async {
                         await context.read<MechanicProfileController>().logout();
-                        if (context.mounted) AppRouter.toLogin(context);
+                        if (context.mounted) AppRouter.toLogin(context, replace: true);
                       },
                     ),
                   ],
                 ),
               ),
       ),
-      bottomNavigationBar: const _MechanicBottomNav(),
+      bottomNavigationBar:
+          const RoleBottomNav(role: 'mechanic', activeIndex: 1),
     );
   }
 }
@@ -276,64 +257,6 @@ class _SettingsTile extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _MechanicBottomNav extends StatelessWidget {
-  const _MechanicBottomNav();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          InkWell(
-            onTap: () => AppRouter.toMechanicHome(context, replace: true),
-            child: const _NavItem(icon: Icons.build, label: 'My Jobs', isActive: false),
-          ),
-          const _NavItem(
-              icon: Icons.inventory_2_outlined,
-              label: 'Parts',
-              isActive: false),
-          InkWell(
-            onTap: () => AppRouter.toMechanicProfile(context, replace: true),
-            child: const _NavItem(
-                icon: Icons.person_outline, label: 'Profile', isActive: true),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _NavItem extends StatelessWidget {
-  const _NavItem({
-    required this.icon,
-    required this.label,
-    required this.isActive,
-  });
-  final IconData icon;
-  final String label;
-  final bool isActive;
-
-  @override
-  Widget build(BuildContext context) {
-    final color = isActive ? AppColors.limeAccent : AppColors.textMuted;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, color: color, size: 22),
-        const SizedBox(height: 2),
-        Text(label, style: TextStyle(color: color, fontSize: 10)),
-      ],
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:auto_care_app/core/router/app_router.dart';
 import 'package:auto_care_app/core/theme/app_colors.dart';
 import 'package:auto_care_app/core/theme/app_text_styles.dart';
 import 'package:auto_care_app/features/splash/widgets/glowing_logo.dart';
@@ -7,11 +8,7 @@ import 'package:flutter/material.dart';
 
 
 /// First screen shown when the app opens.
-/// Responsible for: showing branding for ~2s, then checking
-/// whether a saved login token exists, and routing accordingly.
-///
-/// Wire up navigation in _checkLoginStatus() once app_router.dart
-/// and secure_storage.dart exist in your project.
+/// Shows branding briefly, then routes to the login screen.
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -27,18 +24,12 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _checkLoginStatus() async {
-    await Future.delayed(const Duration(seconds: 2));
+    // Short branding pause only — no artificial 2s stall, and this
+    // demo always starts at the login screen.
+    await Future.delayed(const Duration(milliseconds: 800));
     if (!mounted) return;
 
-    // TODO: replace with real check once SecureStorage is added:
-    // final token = await SecureStorage().read('access_token');
-    // if (token != null) {
-    //   context.go('/admin/dashboard'); // or role-based route
-    // } else {
-    //   context.go('/login');
-    // }
-
-    Navigator.of(context).pushReplacementNamed('/login');
+    AppRouter.toLogin(context, replace: true);
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:auto_care_app/widgets/common/role_bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/router/app_router.dart';
@@ -206,7 +207,7 @@ class _CashierHomeView extends StatelessWidget {
                 ),
         ),
       ),
-      bottomNavigationBar: const _CashierBottomNav(),
+      bottomNavigationBar: const RoleBottomNav(role: 'cashier'),
     );
   }
 }
@@ -249,45 +250,6 @@ class _StatCard extends StatelessWidget {
               color: valueColor ?? AppColors.textPrimary,
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _CashierBottomNav extends StatelessWidget {
-  const _CashierBottomNav();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          InkWell(
-            onTap: () => AppRouter.toCashierHome(context, replace: true),
-            child: const Icon(Icons.grid_view_rounded,
-                color: AppColors.limeAccent, size: 24),
-          ),
-          InkWell(
-            onTap: () => AppRouter.toPendingPayments(context),
-            child: const Icon(Icons.receipt_long_outlined,
-                color: AppColors.textMuted, size: 24),
-          ),
-          InkWell(
-            onTap: () => AppRouter.toDeliveryReady(context),
-            child: const Icon(Icons.directions_car_outlined,
-                color: AppColors.textMuted, size: 24),
-          ),
-          const Icon(Icons.calendar_today_outlined,
-              color: AppColors.textMuted, size: 24),
-          const Icon(Icons.settings_outlined, color: AppColors.textMuted, size: 24),
         ],
       ),
     );

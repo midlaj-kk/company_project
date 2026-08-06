@@ -35,4 +35,15 @@ class AdminDashboardController extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  /// Fetches jobs awaiting quality check, used by the Quality Check
+  /// quick action. Returns an empty list on failure so the caller can
+  /// show a friendly message instead of crashing.
+  Future<List<dynamic>> loadQcPendingJobs() async {
+    try {
+      return await _adminService.getQcPendingJobs();
+    } catch (_) {
+      return [];
+    }
+  }
 }

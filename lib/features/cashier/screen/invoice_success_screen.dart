@@ -3,6 +3,7 @@ import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../../../widgets/common/animated_checkmark.dart';
+import '../../../widgets/common/role_bottom_nav.dart';
 
 /// Full-screen confirmation shown right after an invoice is
 /// generated. Pass the created bill's data in directly (no
@@ -101,7 +102,7 @@ class InvoiceSuccessScreen extends StatelessWidget {
                           const SizedBox(height: 14),
                           _DetailRow(
                             label: 'TOTAL AMOUNT',
-                            value: '\$${totalAmount.toStringAsFixed(2)}',
+                            value: '₹${totalAmount.toStringAsFixed(2)}',
                             valueColor: AppColors.textPrimary,
                             valueBold: true,
                           ),
@@ -121,50 +122,6 @@ class InvoiceSuccessScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: () {
-                              // TODO: view invoice
-                            },
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: AppColors.divider),
-                              minimumSize: const Size.fromHeight(50),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                            ),
-                            icon: const Icon(Icons.visibility_outlined,
-                                color: AppColors.textPrimary, size: 18),
-                            label: const Text('View',
-                                style:
-                                    TextStyle(color: AppColors.textPrimary)),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: () {
-                              // TODO: download invoice PDF
-                            },
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: AppColors.divider),
-                              minimumSize: const Size.fromHeight(50),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                            ),
-                            icon: const Icon(Icons.download_outlined,
-                                color: AppColors.textPrimary, size: 18),
-                            label: const Text('PDF',
-                                style:
-                                    TextStyle(color: AppColors.textPrimary)),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
 
                     Container(
                       padding: const EdgeInsets.all(12),
@@ -196,7 +153,8 @@ class InvoiceSuccessScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const _CashierBottomNav(),
+      bottomNavigationBar:
+          const RoleBottomNav(role: 'cashier', activeIndex: 2),
     );
   }
 }
@@ -221,44 +179,20 @@ class _DetailRow extends StatelessWidget {
       children: [
         Text(label,
             style: AppTextStyles.caption.copyWith(letterSpacing: 0.5)),
-        Text(
-          value,
-          style: TextStyle(
-            color: valueColor ?? AppColors.textPrimary,
-            fontWeight: valueBold ? FontWeight.bold : FontWeight.w600,
-            fontSize: valueBold ? 16 : 14,
+        const SizedBox(width: 12),
+        Flexible(
+          child: Text(
+            value,
+            textAlign: TextAlign.end,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: valueColor ?? AppColors.textPrimary,
+              fontWeight: valueBold ? FontWeight.bold : FontWeight.w600,
+              fontSize: valueBold ? 16 : 14,
+            ),
           ),
         ),
       ],
-    );
-  }
-}
-
-class _CashierBottomNav extends StatelessWidget {
-  const _CashierBottomNav();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Icon(Icons.grid_view_rounded, color: AppColors.textMuted, size: 24),
-          Icon(Icons.receipt_long_outlined,
-              color: AppColors.limeAccent, size: 24),
-          Icon(Icons.directions_car_outlined,
-              color: AppColors.textMuted, size: 24),
-          Icon(Icons.calendar_today_outlined,
-              color: AppColors.textMuted, size: 24),
-          Icon(Icons.settings_outlined, color: AppColors.textMuted, size: 24),
-        ],
-      ),
     );
   }
 }

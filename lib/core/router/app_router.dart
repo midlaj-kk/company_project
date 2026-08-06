@@ -33,24 +33,65 @@ class AppRouter {
   /// Routes to the role's home screen after login, clearing the
   /// entire back stack so the back button cannot return to login.
   static void afterLogin(BuildContext context, String role) {
-    final Widget screen = switch (role) {
+    resetToRoleHome(context, _homeForRole(role));
+  }
+
+  /// Returns the home screen for a role string (defaults to Admin).
+  static Widget _homeForRole(String role) {
+    return switch (role) {
       'service_advisor' => const AdvisorHomeScreen(),
       'mechanic' => const MechanicHomeScreen(),
       'cashier' => const CashierHomeScreen(),
       _ => const AdminDashboardScreen(),
     };
+  }
+
+  /// Bottom-nav "Home" taps: reset the entire stack to the given
+  /// home screen. This prevents the bug where tapping the active tab
+  /// stacks a second copy of the home screen on top of the current
+  /// one (so the back button returns to a stale duplicate).
+  static void resetToRoleHome(BuildContext context, Widget screen) {
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (_) => screen),
       (route) => false,
     );
   }
 
+  /// Bottom-nav "Home" tap for the Admin role.
+  static void resetToAdminHome(BuildContext context) =>
+      resetToRoleHome(context, const AdminDashboardScreen());
+
+  /// Bottom-nav "Home" tap for the Advisor role.
+  static void resetToAdvisorHome(BuildContext context) =>
+      resetToRoleHome(context, const AdvisorHomeScreen());
+
+  /// Bottom-nav "Home" tap for the Cashier role.
+  static void resetToCashierHome(BuildContext context) =>
+      resetToRoleHome(context, const CashierHomeScreen());
+
+  /// Bottom-nav "My Jobs" tap for the Mechanic role.
+  static void resetToMechanicHome(BuildContext context) =>
+      resetToRoleHome(context, const MechanicHomeScreen());
+
+  /// Bottom-nav "Profile" tap for the Mechanic role.
+  static void resetToMechanicProfile(BuildContext context) =>
+      resetToRoleHome(context, const MechanicProfileScreen());
+
   // -------------------------------------------------------------
   // Auth
   // -------------------------------------------------------------
 
   static void toLogin(BuildContext context, {bool replace = false}) {
-    _push(context, const LoginScreen(), replace: replace);
+    if (replace) {
+      // Used after logout / on splash: wipe the whole stack so the
+      // back button cannot return to a logged-in screen.
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+        (route) => false,
+      );
+    } else {
+      _push(context, const LoginScreen());
+    }
   }
 
   // -------------------------------------------------------------

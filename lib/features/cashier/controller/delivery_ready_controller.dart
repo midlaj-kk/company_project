@@ -36,6 +36,10 @@ class DeliveryReadyController extends ChangeNotifier {
     }).toList();
   }
 
+  /// Called on every keystroke — just triggers a rebuild so the
+  /// locally-filtered list updates; no service call.
+  void onSearchChanged(String _) => notifyListeners();
+
   @override
   void dispose() {
     searchController.dispose();

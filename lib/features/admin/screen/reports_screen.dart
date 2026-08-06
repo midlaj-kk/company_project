@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../controller/reports_controller.dart';
@@ -106,9 +107,6 @@ class _ReportsView extends StatelessWidget {
                         title: 'Revenue Report',
                         value: '₹${controller.revenueThisMonth.toStringAsFixed(0)}',
                         subtitle: 'this month',
-                        onTap: () {
-                          // TODO: navigate to Revenue Report detail
-                        },
                       ),
                       ReportCard(
                         icon: Icons.verified_outlined,
@@ -116,9 +114,6 @@ class _ReportsView extends StatelessWidget {
                         title: 'Completed Services',
                         value: '${controller.completedServices} jobs',
                         subtitle: 'this month',
-                        onTap: () {
-                          // TODO: navigate to Completed Services detail
-                        },
                       ),
                       ReportCard(
                         icon: Icons.people_outline,
@@ -130,9 +125,6 @@ class _ReportsView extends StatelessWidget {
                         subtitle: controller.topMechanicName.isEmpty
                             ? ''
                             : '${controller.topMechanicJobs} jobs completed',
-                        onTap: () {
-                          // TODO: navigate to Mechanic Productivity detail
-                        },
                       ),
                       ReportCard(
                         icon: Icons.inventory_2_outlined,
@@ -142,9 +134,6 @@ class _ReportsView extends StatelessWidget {
                             ? 'No data'
                             : 'Most used: ${controller.mostUsedPartName}',
                         subtitle: 'this month',
-                        onTap: () {
-                          // TODO: navigate to Spare Parts Usage detail
-                        },
                       ),
                       ReportCard(
                         icon: Icons.receipt_long_outlined,
@@ -154,9 +143,7 @@ class _ReportsView extends StatelessWidget {
                             '₹${controller.pendingPaymentsTotal.toStringAsFixed(0)}',
                         subtitle: 'action needed',
                         valueColor: AppColors.amberAccent,
-                        onTap: () {
-                          // TODO: navigate to Pending Payments detail
-                        },
+                        onTap: () => AppRouter.toPendingPayments(context),
                       ),
                       ReportCard(
                         icon: Icons.warning_amber_rounded,
@@ -165,22 +152,12 @@ class _ReportsView extends StatelessWidget {
                         value: '${controller.lowStockCount} items critical',
                         subtitle: 'restock recommended',
                         valueColor: AppColors.statusError,
-                        onTap: () {
-                          // TODO: navigate to Low Stock Report detail
-                        },
+                        onTap: () => AppRouter.toInventory(context),
                       ),
                     ],
                   ),
                 ),
               ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.limeAccent,
-        onPressed: () {
-          // TODO: implement export/share functionality
-        },
-        child: const Icon(Icons.ios_share, color: Colors.black),
       ),
     );
   }

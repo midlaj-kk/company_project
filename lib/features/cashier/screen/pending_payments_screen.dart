@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../../widgets/common/role_bottom_nav.dart';
 import '../controller/pending_payments_controller.dart';
 import '../widgets/pending_payment_card.dart';
 import 'record_payment_screen.dart';
@@ -173,33 +174,7 @@ class _PendingPaymentsView extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const _CashierBottomNav(),
-    );
-  }
-}
-
-class _CashierBottomNav extends StatelessWidget {
-  const _CashierBottomNav();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Icon(Icons.receipt_long_outlined,
-              color: AppColors.textMuted, size: 24),
-          Icon(Icons.point_of_sale, color: AppColors.limeAccent, size: 24),
-          Icon(Icons.bar_chart_outlined, color: AppColors.textMuted, size: 24),
-          Icon(Icons.settings_outlined, color: AppColors.textMuted, size: 24),
-        ],
-      ),
+      bottomNavigationBar: const RoleBottomNav(role: 'cashier', activeIndex: 1),
     );
   }
 }

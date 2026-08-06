@@ -13,6 +13,8 @@ class JobDetailAdvisorController extends ChangeNotifier {
   String? errorMessage;
   Map<String, dynamic>? job;
 
+  List<dynamic> mechanics = [];
+
   String selectedTab = 'complaint'; // complaint | work_done | parts_used
 
   Future<void> load() async {
@@ -22,6 +24,7 @@ class JobDetailAdvisorController extends ChangeNotifier {
 
     try {
       job = await _advisorService.getJobDetail(jobId);
+      mechanics = await _advisorService.getMechanics();
     } catch (_) {
       errorMessage = 'Could not load job details. Pull down to retry.';
     } finally {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../../widgets/common/role_bottom_nav.dart';
 import '../../../widgets/common/status_badge.dart';
 import '../controller/job_detail_mechanic_controller.dart';
 import '../widgets/part_used_item.dart';
@@ -319,7 +319,7 @@ class _JobDetailMechanicView extends StatelessWidget {
                     ),
                   ),
       ),
-      bottomNavigationBar: const _MechanicBottomNav(),
+      bottomNavigationBar: const RoleBottomNav(role: 'mechanic'),
     );
   }
 }
@@ -367,64 +367,6 @@ class _TotalBlock extends StatelessWidget {
                 color: AppColors.limeAccent,
                 fontWeight: FontWeight.bold,
                 fontSize: 16)),
-      ],
-    );
-  }
-}
-
-class _MechanicBottomNav extends StatelessWidget {
-  const _MechanicBottomNav();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          InkWell(
-            onTap: () => AppRouter.toMechanicHome(context, replace: true),
-            child: const _NavItem(icon: Icons.build, label: 'My Jobs', isActive: true),
-          ),
-          const _NavItem(
-              icon: Icons.inventory_2_outlined,
-              label: 'Parts',
-              isActive: false),
-          InkWell(
-            onTap: () => AppRouter.toMechanicProfile(context, replace: true),
-            child: const _NavItem(
-                icon: Icons.person_outline, label: 'Profile', isActive: false),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _NavItem extends StatelessWidget {
-  const _NavItem({
-    required this.icon,
-    required this.label,
-    required this.isActive,
-  });
-  final IconData icon;
-  final String label;
-  final bool isActive;
-
-  @override
-  Widget build(BuildContext context) {
-    final color = isActive ? AppColors.limeAccent : AppColors.textMuted;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, color: color, size: 22),
-        const SizedBox(height: 2),
-        Text(label, style: TextStyle(color: color, fontSize: 10)),
       ],
     );
   }

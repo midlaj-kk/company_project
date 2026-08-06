@@ -1,3 +1,4 @@
+import 'package:auto_care_app/widgets/common/role_bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/router/app_router.dart';
@@ -165,17 +166,7 @@ class _AdvisorHomeView extends StatelessWidget {
                 const SizedBox(height: 24),
 
                 // --- Today's Jobs header ---
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Today's Jobs", style: AppTextStyles.heading3),
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text('View All',
-                          style: TextStyle(color: AppColors.limeAccent)),
-                    ),
-                  ],
-                ),
+                Text("Today's Jobs", style: AppTextStyles.heading3),
                 const SizedBox(height: 4),
 
                 // --- Filter tabs ---
@@ -256,43 +247,7 @@ class _AdvisorHomeView extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const _AdvisorBottomNav(),
-    );
-  }
-}
-
-/// Bottom navigation bar for the Advisor role.
-class _AdvisorBottomNav extends StatelessWidget {
-  const _AdvisorBottomNav();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          InkWell(
-            onTap: () => AppRouter.toAdvisorHome(context, replace: true),
-            child: const Icon(Icons.grid_view_rounded,
-                color: AppColors.limeAccent, size: 24),
-          ),
-          InkWell(
-            onTap: () => AppRouter.toCustomerList(context),
-            child: const Icon(Icons.people_outline,
-                color: AppColors.textMuted, size: 24),
-          ),
-          const Icon(Icons.directions_car_outlined,
-              color: AppColors.textMuted, size: 24),
-          const Icon(Icons.build_outlined, color: AppColors.textMuted, size: 24),
-          const Icon(Icons.settings_outlined, color: AppColors.textMuted, size: 24),
-        ],
-      ),
+      bottomNavigationBar: const RoleBottomNav(role: 'advisor'),
     );
   }
 }

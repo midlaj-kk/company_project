@@ -171,26 +171,6 @@ class PaymentSuccessScreen extends StatelessWidget {
                   label: const Text('Go to Home'),
                 ),
               ),
-              const SizedBox(height: 10),
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  onPressed: () {
-                    // TODO: download/share receipt
-                  },
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: AppColors.divider),
-                    minimumSize: const Size.fromHeight(54),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  icon: const Icon(Icons.download_outlined,
-                      color: AppColors.textPrimary, size: 18),
-                  label: const Text('Download Receipt',
-                      style: TextStyle(color: AppColors.textPrimary)),
-                ),
-              ),
             ],
           ),
         ),

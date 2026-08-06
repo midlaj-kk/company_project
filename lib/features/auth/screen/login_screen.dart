@@ -123,7 +123,12 @@ class _LoginView extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            // TODO: navigate to forgot-password screen
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Password reset is handled by your workshop admin.'),
+                              ),
+                            );
                           },
                           child: const Text(
                             'Forgot Password?',
@@ -155,14 +160,6 @@ class _LoginView extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 24),
-
-                    AppButton(
-                      label: 'Quick Biometric Sign-in',
-                      outlined: true,
-                      onPressed: () {
-                        // TODO: implement local_auth biometric flow
-                      },
-                    ),
 
                     const SizedBox(height: 32),
                     Center(

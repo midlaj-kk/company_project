@@ -131,9 +131,6 @@ class _StaffManagementView extends StatelessWidget {
                                     email: staff['email'] ?? '',
                                     phone: staff['phone'] ?? '',
                                     isActive: staff['status'] == 'active',
-                                    onTap: () {
-                                      // TODO: navigate to staff detail/edit screen
-                                    },
                                   );
                                 },
                               ),

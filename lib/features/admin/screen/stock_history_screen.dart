@@ -147,23 +147,8 @@ class _StockHistoryView extends StatelessWidget {
                           const SizedBox(height: 24),
 
                           // --- Movement history ---
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Movement History',
-                                  style: AppTextStyles.heading3),
-                              TextButton.icon(
-                                onPressed: () {
-                                  // TODO: add filter sheet if needed
-                                },
-                                icon: const Icon(Icons.filter_list,
-                                    size: 16, color: AppColors.limeAccent),
-                                label: const Text('FILTER',
-                                    style:
-                                        TextStyle(color: AppColors.limeAccent)),
-                              ),
-                            ],
-                          ),
+                          Text('Movement History',
+                              style: AppTextStyles.heading3),
                           const SizedBox(height: 8),
 
                           if (controller.movements.isEmpty)

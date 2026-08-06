@@ -1,6 +1,7 @@
 import 'package:auto_care_app/core/router/app_router.dart';
 import 'package:auto_care_app/features/admin/controller/admin_dashboard_controller.dart';
 import 'package:auto_care_app/widgets/common/job_card.dart';
+import 'package:auto_care_app/widgets/common/role_bottom_nav.dart';
 import 'package:auto_care_app/widgets/common/stat_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -127,9 +128,7 @@ class _AdminDashboardView extends StatelessWidget {
                           if (controller.lowStockItems > 0) ...[
                             LowStockBanner(
                               itemCount: controller.lowStockItems,
-                              onTap: () {
-                                // TODO: navigate to inventory low-stock screen
-                              },
+                              onTap: () => AppRouter.toInventory(context),
                             ),
                             const SizedBox(height: 24),
                           ],
@@ -165,11 +164,8 @@ class _AdminDashboardView extends StatelessWidget {
                               QuickActionButton(
                                 icon: Icons.fact_check_outlined,
                                 label: 'QUALITY CHECK',
-                                onTap: () {
-                                  // Quality Check needs a specific job id —
-                                  // pick one from Recent Jobs below, or
-                                  // build a job picker screen later.
-                                },
+                                onTap: () =>
+                                    _openQualityCheckPicker(context, controller),
                               ),
                             ],
                           ),
@@ -177,19 +173,10 @@ class _AdminDashboardView extends StatelessWidget {
 
                           // --- Recent jobs ---
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('RECENT JOBS',
                                   style: AppTextStyles.caption
                                       .copyWith(letterSpacing: 1)),
-                              TextButton(
-                                onPressed: () {
-                                  // TODO: navigate to full job list
-                                },
-                                child: const Text('See All',
-                                    style:
-                                        TextStyle(color: AppColors.limeAccent)),
-                              ),
                             ],
                           ),
                           const SizedBox(height: 4),
@@ -221,7 +208,74 @@ class _AdminDashboardView extends StatelessWidget {
                     ),
         ),
       ),
-      bottomNavigationBar: const _AdminBottomNav(),
+      bottomNavigationBar: const RoleBottomNav(role: 'admin'),
+    );
+  }
+
+  /// Quick-action tap: list QC-pending jobs and let the admin pick one.
+  Future<void> _openQualityCheckPicker(
+    BuildContext context,
+    AdminDashboardController controller,
+  ) async {
+    final jobs = await controller.loadQcPendingJobs();
+    if (!context.mounted) return;
+
+    if (jobs.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No jobs pending quality check')),
+      );
+      return;
+    }
+
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (sheetContext) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Text('PENDING QUALITY CHECK',
+                  style: AppTextStyles.caption.copyWith(letterSpacing: 1)),
+            ),
+            Flexible(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: jobs.length,
+                itemBuilder: (_, index) {
+                  final job = jobs[index];
+                  return ListTile(
+                    title: Text(
+                      '${job['job_number'] ?? ''}',
+                      style: const TextStyle(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    subtitle: Text(
+                      '${job['vehicle_number'] ?? ''}  ·  '
+                      '${job['customer_name'] ?? ''}',
+                      style: const TextStyle(color: AppColors.textSecondary),
+                    ),
+                    onTap: () {
+                      Navigator.of(sheetContext).pop();
+                      AppRouter.toQualityCheck(
+                        context,
+                        serviceJobId: job['id'],
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 12),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -247,57 +301,6 @@ class _ErrorState extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-/// Bottom navigation bar for the Admin role.
-/// TODO: wire up onTap to actually switch screens once
-/// app_router.dart is set up.
-class _AdminBottomNav extends StatelessWidget {
-  const _AdminBottomNav();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _NavIcon(icon: Icons.grid_view_rounded, isActive: true,
-              onTap: () => AppRouter.toAdminDashboard(context, replace: true)),
-          _NavIcon(icon: Icons.people_outline, isActive: false,
-              onTap: () => AppRouter.toStaffManagement(context)),
-          _NavIcon(icon: Icons.search, isActive: false, onTap: null),
-          _NavIcon(icon: Icons.bar_chart_outlined, isActive: false,
-              onTap: () => AppRouter.toReports(context)),
-          _NavIcon(icon: Icons.settings_outlined, isActive: false, onTap: null),
-        ],
-      ),
-    );
-  }
-}
-
-class _NavIcon extends StatelessWidget {
-  const _NavIcon({required this.icon, required this.isActive, this.onTap});
-  final IconData icon;
-  final bool isActive;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Icon(
-        icon,
-        color: isActive ? AppColors.limeAccent : AppColors.textMuted,
-        size: 24,
       ),
     );
   }

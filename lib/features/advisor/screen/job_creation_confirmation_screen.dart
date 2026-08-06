@@ -4,6 +4,7 @@ import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../../../widgets/common/animated_checkmark.dart';
+import '../../../widgets/common/role_bottom_nav.dart';
 import '../../../widgets/common/status_badge.dart';
 import '../controller/create_service_job_controller.dart';
 
@@ -176,35 +177,7 @@ class JobCreationConfirmationScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const _AdvisorBottomNav(),
-    );
-  }
-}
-
-class _AdvisorBottomNav extends StatelessWidget {
-  const _AdvisorBottomNav();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Icon(Icons.grid_view_rounded, color: AppColors.textMuted, size: 24),
-          Icon(Icons.build, color: AppColors.limeAccent, size: 24),
-          Icon(Icons.directions_car_outlined,
-              color: AppColors.textMuted, size: 24),
-          Icon(Icons.calendar_today_outlined,
-              color: AppColors.textMuted, size: 24),
-          Icon(Icons.settings_outlined, color: AppColors.textMuted, size: 24),
-        ],
-      ),
+      bottomNavigationBar: const RoleBottomNav(role: 'advisor', activeIndex: 1),
     );
   }
 }

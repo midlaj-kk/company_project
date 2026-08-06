@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../service/mechanic_service.dart';
 
@@ -10,6 +11,7 @@ class AddPartUsedController extends ChangeNotifier {
   final MechanicService _mechanicService = MechanicService();
 
   final TextEditingController searchController = TextEditingController();
+  Timer? _debounce;
 
   bool isSearching = false;
   List<dynamic> searchResults = [];
@@ -29,7 +31,13 @@ class AddPartUsedController extends ChangeNotifier {
   double get totalPrice =>
       ((selectedPart?['selling_price'] as num?)?.toDouble() ?? 0) * quantity;
 
-  Future<void> search(String query) async {
+  /// Debounced so the service is not queried on every keystroke.
+  void search(String query) {
+    _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 300), () => _runSearch(query));
+  }
+
+  Future<void> _runSearch(String query) async {
     if (query.trim().isEmpty) {
       searchResults = [];
       notifyListeners();
@@ -100,6 +108,7 @@ class AddPartUsedController extends ChangeNotifier {
 
   @override
   void dispose() {
+    _debounce?.cancel();
     searchController.dispose();
     super.dispose();
   }

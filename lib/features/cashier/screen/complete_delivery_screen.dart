@@ -4,6 +4,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../../../widgets/common/animated_checkmark.dart';
 import '../../../widgets/common/app_button.dart';
+import '../../../widgets/common/role_bottom_nav.dart';
 import '../controller/complete_delivery_controller.dart';
 
 /// Cashier "Complete Delivery" screen.
@@ -145,20 +146,11 @@ class _CompleteDeliveryView extends StatelessWidget {
                     child: const Text('Back to Home'),
                   ),
                 ),
-                const SizedBox(height: 12),
-                TextButton(
-                  onPressed: () {
-                    // TODO: view full digital receipt
-                  },
-                  child: Text('VIEW FULL DIGITAL RECEIPT',
-                      style: AppTextStyles.caption.copyWith(
-                          color: AppColors.limeAccent, letterSpacing: 0.5)),
-                ),
               ],
             ),
           ),
         ),
-        bottomNavigationBar: const _CashierBottomNav(),
+        bottomNavigationBar: const RoleBottomNav(role: 'cashier', activeIndex: 2),
       );
     }
 
@@ -297,7 +289,7 @@ class _CompleteDeliveryView extends StatelessWidget {
                           initialTime:
                               TimeOfDay.fromDateTime(controller.deliveryDateTime),
                         );
-                        if (pickedTime == null) return;
+                        if (pickedTime == null || !context.mounted) return;
                         context.read<CompleteDeliveryController>().setDateTime(
                               DateTime(pickedDate.year, pickedDate.month,
                                   pickedDate.day, pickedTime.hour, pickedTime.minute),
@@ -388,7 +380,7 @@ class _CompleteDeliveryView extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const _CashierBottomNav(),
+      bottomNavigationBar: const RoleBottomNav(role: 'cashier', activeIndex: 2),
     );
   }
 
@@ -442,36 +434,16 @@ class _SummaryRow extends StatelessWidget {
         const SizedBox(width: 12),
         Text(label, style: AppTextStyles.caption),
         const Spacer(),
-        Text(value,
+        Flexible(
+          child: Text(
+            value,
+            textAlign: TextAlign.end,
+            overflow: TextOverflow.ellipsis,
             style: AppTextStyles.bodyRegular
-                .copyWith(fontWeight: FontWeight.bold)),
+                .copyWith(fontWeight: FontWeight.bold),
+          ),
+        ),
       ],
-    );
-  }
-}
-
-class _CashierBottomNav extends StatelessWidget {
-  const _CashierBottomNav();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Icon(Icons.receipt_long_outlined,
-              color: AppColors.textMuted, size: 24),
-          Icon(Icons.point_of_sale, color: AppColors.textMuted, size: 24),
-          Icon(Icons.bar_chart_outlined, color: AppColors.textMuted, size: 24),
-          Icon(Icons.settings_outlined, color: AppColors.textMuted, size: 24),
-        ],
-      ),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:auto_care_app/widgets/common/role_bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/router/app_router.dart';
@@ -165,47 +166,13 @@ class _VehicleDetailView extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton.icon(
-                              onPressed: () {
-                                // TODO: navigate to Edit Vehicle form
-                              },
-                              style: OutlinedButton.styleFrom(
-                                side: const BorderSide(
-                                    color: AppColors.divider),
-                                minimumSize: const Size.fromHeight(54),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                              ),
-                              icon: const Icon(Icons.edit_outlined,
-                                  color: AppColors.textPrimary, size: 18),
-                              label: const Text('Edit Details',
-                                  style:
-                                      TextStyle(color: AppColors.textPrimary)),
-                            ),
-                          ),
                           const SizedBox(height: 24),
 
                           // --- Service History ---
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'SERVICE HISTORY',
-                                style: AppTextStyles.caption
-                                    .copyWith(letterSpacing: 0.6),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  // TODO: navigate to full history list
-                                },
-                                child: const Text('View All',
-                                    style:
-                                        TextStyle(color: AppColors.limeAccent)),
-                              ),
-                            ],
+                          Text(
+                            'SERVICE HISTORY',
+                            style: AppTextStyles.caption
+                                .copyWith(letterSpacing: 0.6),
                           ),
                           const SizedBox(height: 4),
 
@@ -284,35 +251,8 @@ class _VehicleDetailView extends StatelessWidget {
                     ),
                   ),
       ),
-      bottomNavigationBar: controller.isLoading ? null : const _AdvisorBottomNav(),
-    );
-  }
-}
-
-/// Bottom navigation bar for the Advisor role (same pattern as Advisor Home).
-class _AdvisorBottomNav extends StatelessWidget {
-  const _AdvisorBottomNav();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Icon(Icons.grid_view_rounded, color: AppColors.textMuted, size: 24),
-          Icon(Icons.directions_car, color: AppColors.limeAccent, size: 24),
-          Icon(Icons.search, color: AppColors.textMuted, size: 24),
-          Icon(Icons.calendar_today_outlined,
-              color: AppColors.textMuted, size: 24),
-          Icon(Icons.settings_outlined, color: AppColors.textMuted, size: 24),
-        ],
-      ),
+      bottomNavigationBar:
+          controller.isLoading ? null : const RoleBottomNav(role: 'advisor', activeIndex: 1),
     );
   }
 }

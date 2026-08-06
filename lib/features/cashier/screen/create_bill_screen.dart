@@ -176,16 +176,18 @@ class _CreateBillView extends StatelessWidget {
                                 size: 18, color: AppColors.textMuted),
                           ),
                           const SizedBox(width: 12),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('CUSTOMER',
-                                  style: AppTextStyles.caption
-                                      .copyWith(letterSpacing: 0.4)),
-                              Text(controller.customerName,
-                                  style: AppTextStyles.bodyRegular
-                                      .copyWith(fontWeight: FontWeight.bold)),
-                            ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('CUSTOMER',
+                                    style: AppTextStyles.caption
+                                        .copyWith(letterSpacing: 0.4)),
+                                Text(controller.customerName,
+                                    style: AppTextStyles.bodyRegular
+                                        .copyWith(fontWeight: FontWeight.bold)),
+                              ],
+                            ),
                           ),
                         ],
                       ),

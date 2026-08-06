@@ -1,3 +1,4 @@
+import 'package:auto_care_app/widgets/common/role_bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/theme/app_colors.dart';
@@ -201,13 +202,11 @@ class _JobDetailView extends StatelessWidget {
                                   ),
                                 ),
                                 TextButton(
-                                  onPressed: () {
-                                    // TODO: open mechanic picker sheet,
-                                    // then call controller.changeMechanic(id)
-                                  },
+                                  onPressed: () =>
+                                      _showMechanicPicker(context, controller),
                                   child: const Text('Change Mechanic',
-                                      style:
-                                          TextStyle(color: AppColors.limeAccent)),
+                                      style: TextStyle(
+                                          color: AppColors.limeAccent)),
                                 ),
                               ],
                             ),
@@ -262,11 +261,7 @@ class _JobDetailView extends StatelessWidget {
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton.icon(
-                              onPressed: () {
-                                // TODO: show a status picker respecting
-                                // valid transitions, then call
-                                // controller.updateStatus(newStatus)
-                              },
+                              onPressed: () => _showStatusPicker(context),
                               icon: const Icon(Icons.refresh,
                                   color: Colors.black, size: 18),
                               label: const Text('Update Status'),
@@ -277,7 +272,120 @@ class _JobDetailView extends StatelessWidget {
                     ),
                   ),
       ),
-      bottomNavigationBar: const _AdvisorBottomNav(),
+      bottomNavigationBar: const RoleBottomNav(role: 'advisor', activeIndex: 1),
+    );
+  }
+
+  void _showMechanicPicker(
+    BuildContext context,
+    JobDetailAdvisorController controller,
+  ) {
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (sheetContext) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Text('SELECT MECHANIC',
+                  style: AppTextStyles.caption.copyWith(letterSpacing: 1)),
+            ),
+            if (controller.mechanics.isEmpty)
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Text('No mechanics available',
+                    style: AppTextStyles.bodySecondary),
+              )
+            else
+              Flexible(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: controller.mechanics.length,
+                  itemBuilder: (_, index) {
+                    final mechanic = controller.mechanics[index];
+                    return ListTile(
+                      title: Text(
+                        mechanic['name'] ?? '',
+                        style: const TextStyle(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      subtitle: Text(
+                        mechanic['specialization'] ?? '',
+                        style: const TextStyle(color: AppColors.textSecondary),
+                      ),
+                      onTap: () {
+                        Navigator.of(sheetContext).pop();
+                        controller.changeMechanic(mechanic['id']);
+                      },
+                    );
+                  },
+                ),
+              ),
+            const SizedBox(height: 12),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showStatusPicker(BuildContext context) {
+    const statuses = [
+      ('waiting', 'Waiting'),
+      ('in_progress', 'In Progress'),
+      ('qc_pending', 'QC Pending'),
+      ('ready_for_bill', 'Ready for Bill'),
+      ('ready_for_delivery', 'Ready for Delivery'),
+      ('delivered', 'Delivered'),
+    ];
+
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (sheetContext) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Text('UPDATE STATUS',
+                  style: AppTextStyles.caption.copyWith(letterSpacing: 1)),
+            ),
+            Flexible(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: statuses.length,
+                itemBuilder: (_, index) {
+                  final (value, label) = statuses[index];
+                  return ListTile(
+                    title: Text(
+                      label,
+                      style: const TextStyle(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    onTap: () {
+                      Navigator.of(sheetContext).pop();
+                      context.read<JobDetailAdvisorController>().updateStatus(value);
+                    },
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 12),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -431,34 +539,6 @@ class _TabButton extends StatelessWidget {
           const SizedBox(height: 6),
           if (isSelected)
             Container(width: 24, height: 2, color: AppColors.limeAccent),
-        ],
-      ),
-    );
-  }
-}
-
-class _AdvisorBottomNav extends StatelessWidget {
-  const _AdvisorBottomNav();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Icon(Icons.grid_view_rounded, color: AppColors.textMuted, size: 24),
-          Icon(Icons.build, color: AppColors.limeAccent, size: 24),
-          Icon(Icons.directions_car_outlined,
-              color: AppColors.textMuted, size: 24),
-          Icon(Icons.calendar_today_outlined,
-              color: AppColors.textMuted, size: 24),
-          Icon(Icons.settings_outlined, color: AppColors.textMuted, size: 24),
         ],
       ),
     );

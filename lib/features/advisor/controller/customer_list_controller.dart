@@ -1,3 +1,4 @@
+import 'package:auto_care_app/core/router/app_router.dart';
 import 'package:flutter/material.dart';
 import '../service/advisor_service.dart';
 
@@ -32,6 +33,23 @@ class CustomerListController extends ChangeNotifier {
   }
 
   void onSearchSubmitted(String _) => loadCustomers();
+
+  /// Opens the first vehicle of a customer. The raw backend only
+  /// returns vehicle counts, so resolve the id before navigating
+  /// (previously this hardcoded vehicleId: 1, opening the wrong car).
+  Future<void> openCustomer(
+    BuildContext context,
+    Map<String, dynamic> customer,
+  ) async {
+    try {
+      final vehicles = await _advisorService
+          .getCustomerVehicles(customer['id'] as int);
+      if (vehicles.isEmpty || !context.mounted) return;
+      AppRouter.toVehicleDetail(context, vehicleId: vehicles.first['id'] as int);
+    } catch (_) {
+      // Ignore — tapping again will retry.
+    }
+  }
 
   @override
   void dispose() {

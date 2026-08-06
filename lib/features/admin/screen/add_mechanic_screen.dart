@@ -70,7 +70,12 @@ class _AddMechanicView extends StatelessWidget {
                 child: Column(
                   children: [
                     AvatarUploadPicker(onTap: () {
-                      // TODO: hook up image_picker package
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                              'Profile photo upload is not available yet.'),
+                        ),
+                      );
                     }),
                     const SizedBox(height: 28),
 

@@ -44,22 +44,6 @@ class _InventoryView extends StatelessWidget {
                   Expanded(
                     child: Text('Inventory', style: AppTextStyles.heading3),
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: const BoxDecoration(
-                      color: AppColors.limeAccent,
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                      onPressed: () {
-                        // TODO: navigate to Add Spare Part screen
-                      },
-                      icon: const Icon(Icons.add,
-                          color: Colors.black, size: 20),
-                    ),
-                  ),
                 ],
               ),
             ),
