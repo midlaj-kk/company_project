@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../service/advisor_service.dart';
 
@@ -72,13 +71,6 @@ class CreateServiceJobController extends ChangeNotifier {
       );
       createdJob = job;
       createdSuccessfully = true;
-    } on DioException catch (e) {
-      errorMessage = e.response?.data is Map
-          ? (e.response?.data.values.first is List
-                  ? e.response?.data.values.first[0]
-                  : 'Could not create job.')
-              .toString()
-          : 'Could not reach the server. Check your connection.';
     } catch (_) {
       errorMessage = 'Something went wrong. Please try again.';
     } finally {

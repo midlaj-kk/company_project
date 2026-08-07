@@ -1,5 +1,4 @@
 import 'package:auto_care_app/features/auth/service/login_service.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 /// Holds all mutable state for the Login screen (loading, error,
@@ -47,11 +46,6 @@ class LoginController extends ChangeNotifier {
     try {
       final role = await _loginService.login(email: email, password: password);
       loggedInRole = role;
-    } on DioException catch (e) {
-      errorMessage = e.response?.data is Map
-          ? (e.response?.data['detail'] ?? 'Login failed. Please try again.')
-              .toString()
-          : 'Could not reach the server. Check your connection.';
     } catch (e, stackTrace) {
       // TEMPORARY debug logging — remove once the real cause is found.
       debugPrint('LOGIN ERROR: $e');

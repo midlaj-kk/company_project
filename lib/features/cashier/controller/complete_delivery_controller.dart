@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../service/cashier_service.dart';
 
@@ -49,11 +48,6 @@ class CompleteDeliveryController extends ChangeNotifier {
         remarks: remarksController.text.trim(),
       );
       completedSuccessfully = true;
-    } on DioException catch (e) {
-      errorMessage = e.response?.data is Map
-          ? (e.response?.data['detail'] ?? 'Could not complete delivery.')
-              .toString()
-          : 'Could not reach the server. Check your connection.';
     } catch (_) {
       errorMessage = 'Something went wrong. Please try again.';
     } finally {

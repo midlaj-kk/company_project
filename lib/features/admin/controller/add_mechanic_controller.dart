@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:auto_care_app/features/admin/service/admin_service.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 /// Holds state for the Add/Edit Staff form: text controllers,
@@ -69,13 +68,6 @@ class AddMechanicController extends ChangeNotifier {
             : null,
       );
       createdSuccessfully = true;
-    } on DioException catch (e) {
-      errorMessage = e.response?.data is Map
-          ? (e.response?.data.values.first is List
-                  ? e.response?.data.values.first[0]
-                  : 'Could not create account.')
-              .toString()
-          : 'Could not reach the server. Check your connection.';
     } catch (_) {
       errorMessage = 'Something went wrong. Please try again.';
     } finally {

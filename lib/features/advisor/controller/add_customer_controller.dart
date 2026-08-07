@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../service/advisor_service.dart';
 
@@ -61,13 +60,6 @@ class AddCustomerController extends ChangeNotifier {
       );
       _createdCustomerId = customer['id'] as int;
       currentStep = 2;
-    } on DioException catch (e) {
-      errorMessage = e.response?.data is Map
-          ? (e.response?.data.values.first is List
-                  ? e.response?.data.values.first[0]
-                  : 'Could not save customer.')
-              .toString()
-          : 'Could not reach the server. Check your connection.';
     } catch (_) {
       errorMessage = 'Something went wrong. Please try again.';
     } finally {
@@ -109,13 +101,6 @@ class AddCustomerController extends ChangeNotifier {
         kilometers: int.tryParse(kilometersController.text.trim()),
       );
       completedSuccessfully = true;
-    } on DioException catch (e) {
-      errorMessage = e.response?.data is Map
-          ? (e.response?.data.values.first is List
-                  ? e.response?.data.values.first[0]
-                  : 'Could not save vehicle.')
-              .toString()
-          : 'Could not reach the server. Check your connection.';
     } catch (_) {
       errorMessage = 'Something went wrong. Please try again.';
     } finally {

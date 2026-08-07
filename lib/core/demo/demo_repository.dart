@@ -1,12 +1,9 @@
-import 'demo_config.dart';
 import 'demo_data.dart';
 
 /// In-memory stand-in for the real backend.
 ///
 /// Every method mirrors the exact signature and return shape of the
-/// corresponding `*Service` method, so restoring the real backend is
-/// just a matter of setting [demoMode] to `false` — no controller or
-/// screen changes are needed.
+/// corresponding `*Service` method.
 class DemoRepository {
   DemoRepository._();
 
